@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Habit Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Habit21</h1>
+  </header>
+
+  <main>
+    <section class="left-panel">
+      <h2>Your Habits</h2>
+      <form id="habit-form">
+        <input type="text" id="habit-name" placeholder="New habit..." required />
+        <button type="submit">Add Habit</button>
+      </form>
+
+      <ul id="habit-list">
+      </ul>
+    </section>
+
+    <section class="right-panel">
+      <h2>Calendar</h2>
+      <!-- Календарь будет здесь -->
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

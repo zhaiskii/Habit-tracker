@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  header {
+    background-color: #505e6e;
+    color: white;
+    padding: 1rem;
+    text-align: left;
+  }
+  
+  header h1 {
+    margin-left: 1rem;
+  }
+  
+  main {
+    display: flex;
+    height: calc(100vh - 70px); /* full height minus header */
+  }
+  
+  .left-panel, .right-panel {
+    padding: 2rem;
+    overflow-y: auto;
+  }
+  
+  .left-panel {
+    width: 35%;
+    background-color: #ffffff;
+    border-right: 1px solid #ddd;
+  }
+  
+  .right-panel {
+    width: 65%;
+    background-color: #fafafa;
+  }
+  
+  h2 {
+    margin-bottom: 1rem;
+  }
+  
+  form {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    background-color: #455464;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #37485a;
+  }
+  
+  #habit-list {
+    list-style: none;
+  }
+  
+  #habit-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap; 
+  }  
+  
+  #habit-list button {
+    margin-left: 0.5rem;
+    background-color: #e74c3c;
+  }
+  
+  #habit-list button:hover {
+    background-color: #c0392b;
+  }
+  
+  .habit-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #00ff6a; 
+    margin-left: 10px;
+    cursor: pointer;
+  }
+    
+  #habit-list li span {
+    flex: 1;
+    word-break: break-word;
+  }
+  
