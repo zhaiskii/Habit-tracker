@@ -55,8 +55,13 @@ func (conn *Storage) Show() (*sql.Rows, error) {
 func (conn *Storage) Update(id string, progress int, completed bool) error {
 	conn.mu.Lock()
 	defer conn.mu.Unlock()
-	fmt.Println("qoraa na")
-	fmt.Println(id, progress, completed)
 	_, err := conn.DB.Exec("UPDATE habit SET progress=$1, completed=$2 WHERE id=$3", progress, completed, id)
+	return err
+} 
+
+func (conn *Storage) UpdateDefault() error {
+	conn.mu.Lock()
+	defer conn.mu.Unlock()
+	_, err := conn.DB.Exec("UPDATE habit SET completed=$1", false)
 	return err
 } 

@@ -56,16 +56,16 @@ function deleteHabit(id) {
             renderHabits();
         })
         .catch((err) => console.error("Ошибка при удалении:", err));
-}//kak v knopke zalozhen id???????????
+}
 
 function completeHabit(id) {
     const habit = habits.find((h) => h.id === id);
     if (!habit) return;
-    console.log(habit)
+    let delta = habit.completedToday !== true ? 1 : -1;
     fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: habit.name , progress: habit.progress ^ 1, completedToday: (habit.completedToday!=true) }),
+        body: JSON.stringify({ name: habit.name , progress: habit.progress + delta, completedToday: (habit.completedToday!==true) }),
     })
     .then((res) => res.json())
     .then((updatedHabit) => {
@@ -107,4 +107,3 @@ function renderHabits() {
         habitList.appendChild(li);
     });
 }
-

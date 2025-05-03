@@ -3,6 +3,7 @@ package main
 import(
 	"fmt"
 	"net/http"
+	"time"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -32,13 +33,21 @@ func main(){
         AllowedHeaders: []string{"Content-Type"},
         AllowCredentials: false,
     }))
-
 	trash := &handlers.Handler{Storage: conn}
 	_ = trash
 	r.Get("/", trash.Show)
 	r.Put("/{id}", trash.Update)
 	r.Post("/", trash.Create)
 	r.Delete("/{id}", trash.Delete)
-
+	go func() {
+		ticker := time.NewTicker(24*time.Hour) // negizi kate bar bul zherde
+		var err error
+		defer ticker.Stop()
+		for {
+			<-ticker.C
+			err = conn.UpdateDefault()
+			_ = err
+		}
+	}()
 	http.ListenAndServe(fmt.Sprintf(":%s",cfg.Http.Port), r)
 }
