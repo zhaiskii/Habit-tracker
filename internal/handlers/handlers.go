@@ -15,6 +15,13 @@ type HabitRequest struct {
 	Completed bool `json:"completedToday"`
 }
 
+type HabitRequest2 struct {
+	Name string `json:"name"`
+	Progress int `json:"progress"`
+	Completed bool `json:"completedToday"`
+	Date string `json:"date"`
+}
+
 type HabitResponse struct {
 	ID int `json:"id"`
 	Name string `json:"name"`
@@ -35,13 +42,12 @@ func (conn Handler) Create(w http.ResponseWriter,r *http.Request) {
 	}
 	id := rand.Int()
 	id%=500000
-	fmt.Println(cur)
 	err = conn.Storage.Create(id, cur.Name, cur.Progress, cur.Completed)
 	if err!=nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
-	cur2 := HabitResponse{ ID: id, Name: cur.Name, Progress: cur.Progress, Completed: cur.Completed }
+	cur2 := HabitResponse{ ID: id, Name: cur.Name, Progress: cur.Progress, Completed: cur.Completed}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(cur2)
 }
@@ -67,21 +73,23 @@ func (conn Handler) Show(w http.ResponseWriter,r *http.Request) {
 	for rows.Next() {
 		var cur HabitResponse
 		rows.Scan(&cur.ID, &cur.Name, &cur.Progress, &cur.Completed)
+		fmt.Println("bra bra" ,cur.ID)
 		res=append(res,cur)
 	}
+	defer rows.Close()
 	fmt.Println(res)
 	json.NewEncoder(w).Encode(res)
 }
 
 func (conn Handler) Update(w http.ResponseWriter, r *http.Request) {
-	var nw HabitRequest
+	var nw HabitRequest2
 	err := json.NewDecoder(r.Body).Decode(&nw)
 	id := chi.URLParam(r,"id")
 	if err!=nil {
 		http.Error(w, "Invalid Request", http.StatusBadRequest)
 		return
 	}
-	err = conn.Storage.Update(id,nw.Progress,nw.Completed)
+	err = conn.Storage.Update(id,nw.Progress,nw.Completed,nw.Date)
 	if err!=nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
@@ -96,4 +104,27 @@ func (conn Handler) Update(w http.ResponseWriter, r *http.Request) {
 	nw2 := HabitResponse{ ID: brbr, Name: nw.Name, Progress: nw.Progress, Completed: nw.Completed }
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(nw2)
+}
+
+func (conn Handler) ShowTable(w http.ResponseWriter,r *http.Request) {
+	fmt.Println("qoraa na")
+	rows, err := conn.Storage.ShowTable()
+	if err!=nil {
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	res := make(map[string]int)
+	fmt.Println(res)
+	for rows.Next() {
+		var cur struct{
+			date string
+			count int
+		}
+		rows.Scan(&cur.date, &cur.count)
+		res[cur.date]=cur.count
+	}
+	defer rows.Close()
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Println(res)
+	json.NewEncoder(w).Encode(res)
 }

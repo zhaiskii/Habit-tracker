@@ -39,6 +39,8 @@ func main(){
 	r.Put("/{id}", trash.Update)
 	r.Post("/", trash.Create)
 	r.Delete("/{id}", trash.Delete)
+	r.Get("/api/heatmap", trash.ShowTable)
+
 	go func() {
 		ticker := time.NewTicker(24*time.Hour) // negizi kate bar bul zherde
 		var err error
