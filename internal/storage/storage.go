@@ -98,3 +98,10 @@ func (conn *Storage) ShowTable() (*sql.Rows, error) {
 	}
 	return rows, nil
 }
+
+func (conn *Storage) AddUser(email string, hashed string) error {
+	conn.mu.Lock()
+	defer conn.mu.Unlock()
+	_, err := conn.DB.Exec("INSERT INTO users (email, password) VALUES ($1, $2)", email, hashed)
+	return err
+} 

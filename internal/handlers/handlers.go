@@ -107,7 +107,6 @@ func (conn Handler) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (conn Handler) ShowTable(w http.ResponseWriter,r *http.Request) {
-	fmt.Println("qoraa na")
 	rows, err := conn.Storage.ShowTable()
 	if err!=nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
@@ -127,4 +126,22 @@ func (conn Handler) ShowTable(w http.ResponseWriter,r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	fmt.Println(res)
 	json.NewEncoder(w).Encode(res)
+}
+
+func (conn Handler) AddUser(w http.ResponseWriter, r *http.Request) {
+	var cur struct{
+		Email string `json:"email"`
+		Password string `json:"password"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&cur)
+	if err!=nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	err = conn.Storage.AddUser(cur.Email,cur.Password)
+	if err!=nil{
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 }

@@ -36,10 +36,12 @@ func main(){
 	trash := &handlers.Handler{Storage: conn}
 	_ = trash
 	r.Get("/", trash.Show)
+	r.Get("/api/heatmap", trash.ShowTable)
 	r.Put("/{id}", trash.Update)
 	r.Post("/", trash.Create)
+	r.Post("/api/login", trash.LoginUser)
+	r.Post("/api/register", trash.AddUser)
 	r.Delete("/{id}", trash.Delete)
-	r.Get("/api/heatmap", trash.ShowTable)
 
 	go func() {
 		ticker := time.NewTicker(24*time.Hour) // negizi kate bar bul zherde

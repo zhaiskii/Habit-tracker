@@ -65,6 +65,7 @@ function completeHabit(id) {
     if (!habit) return;
     let delta = habit.completedToday !== true ? 1 : -1;
     const today = new Date().toISOString().split("T")[0];
+    console.log(today)
     fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -151,3 +152,9 @@ function loadHeatmap() {
       .catch(err => console.error("Heatmap load failed:", err));
 }
   
+
+
+
+
+
+
